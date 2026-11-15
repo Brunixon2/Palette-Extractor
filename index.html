@@ -124,9 +124,9 @@
 
     .palette-image {
       display: block;
-      width: 100px;
+      width: 48px;
       max-height: 300px;
-      object-fit: contain;
+      object-fit: fill;
       image-rendering: pixelated;
       border: 1px solid #333333;
       border-radius: 3px;
@@ -329,15 +329,14 @@
     }
 
     function createPalette(colors) {
-      const swatchHeight = 48;
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
-      canvas.width = 160;
-      canvas.height = swatchHeight * colors.length;
+      canvas.width = 1;
+      canvas.height = colors.length;
 
       colors.forEach((color, index) => {
         context.fillStyle = `rgb(${color[0]} ${color[1]} ${color[2]})`;
-        context.fillRect(0, index * swatchHeight, canvas.width, swatchHeight);
+        context.fillRect(0, index, 1, 1);
       });
 
       canvas.toBlob(blob => {
@@ -355,6 +354,7 @@
         preview.className = 'palette-image';
         preview.src = paletteUrl;
         preview.alt = `Vertical color palette with ${colors.length} colors`;
+        preview.style.height = `${Math.min(300, colors.length * 36)}px`;
 
         paletteContent.replaceChildren(preview);
         copyButton.disabled = false;
